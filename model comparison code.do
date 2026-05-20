@@ -8,7 +8,7 @@
 
 set scheme stmono2
 * pre-to-post trend change (25% 50% 100% increase); 10-50 time periods; 4-20 controls; 1 sd for white noise 
-power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.25 1.50 2) tacorr(.20) cacorr(.20) reps(2000) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.25 1.50 2) trho1(.20) crho1(.20) reps(2000) ///
 	noi table perf	
 	
 	mat effect = r(pss_table)
@@ -34,11 +34,11 @@ power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(1) cpre(1) t
 	rename effect19 coverage
 	rename effect20 se
 	
-	
-save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_nw.dta", replace
+save "C:\Users\Ariel\Desktop\ITSA_stuff\Compare NW and PRAIS\trend_nw.dta"
 
 ***** produce graphs *****
-use "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_nw.dta", replace
+use "C:\Users\Ariel\Desktop\ITSA_stuff\Compare NW and PRAIS\trend_nw.dta", replace
+
 
 ***** produce graphs *****
 
@@ -92,7 +92,7 @@ forvalues ac = -0.9(0.3)0.9 {
             tint(10) cint(10) tpre(1) cpre(1) ///
             tstep(0) cstep(0) tsd(1) csd(1) ///
             cpost(1) tpost(1.25 1.50 2) ///
-            tacorr(`ac') cacorr(`ac') alpha(0.05) reps(2000) ///
+            trho1(`ac') crho1(`ac') alpha(0.05) reps(2000) ///
 			noi table perf
 			
 			mat effect = nullmat(effect) \ r(pss_table)
@@ -263,7 +263,7 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_cover
 ****************
 set scheme stmono2
 * pre-to-post trend change (25% 50% 100% increase); 10-50 time periods; 4-20 controls; 1 sd for white noise 
-power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.25 1.50 2) tacorr(.20) cacorr(.20) reps(2000) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.25 1.50 2) trho1(.20) crho1(.20) reps(2000) ///
 	noi table prais perf
 	
 	mat effect = r(pss_table)
@@ -289,9 +289,9 @@ power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(1) cpre(1) t
 	rename effect19 coverage
 	rename effect20 se
 	
-save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_prais.dta", replace	
+*save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_prais.dta", replace	
 
-
+save "C:\Users\Ariel\Desktop\ITSA_stuff\Compare NW and PRAIS\trend_prais.dta", replace
 ***** produce graphs *****
 
 use "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_prais.dta", replace
@@ -345,8 +345,8 @@ forvalues ac = -0.9(0.3)0.9 {
             tint(10) cint(10) tpre(1) cpre(1) ///
             tstep(0) cstep(0) tsd(1) csd(1) ///
             cpost(1) tpost(1.25 1.50 2) ///
-            tacorr(`ac') cacorr(`ac') alpha(0.05) reps(2000) ///
-			noi table prais perf
+            trho1(`ac') crho1(`ac') alpha(0.05) reps(1000) ///
+			noi table praisk perf
 			
 			mat effect = nullmat(effect) \ r(pss_table)
 			
@@ -373,8 +373,9 @@ forvalues ac = -0.9(0.3)0.9 {
 	rename effect18 rmse
 	rename effect19 coverage
 	rename effect20 se
+	gen model = "PW"
 	
-save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\trend_prais_ac.dta", replace
+save "C:\Users\Ariel\Desktop\ITSA_stuff\Compare NW and PRAIS\trend_prais_ac.dta", replace
 
 
 ***********************
@@ -616,7 +617,7 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\combined_tr
 
 set scheme stmono2
 * level change (20% 25% 30% increase); 10-50 time periods; 4-20 controls; 1 sd for white noise 
-power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(0) cpre(0) tstep(2 2.5 3) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) reps(2000) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(0) cpre(0) tstep(2 2.5 3) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) reps(2000) ///
 	noi table level perf	
 	
 	mat effect = r(pss_table)
@@ -680,7 +681,7 @@ forvalues ac = -0.9(0.3)0.9 {
             tint(10) cint(10) tpre(1) cpre(1) ///
             tstep(2 2.5 3) cstep(0) tsd(1) csd(1) ///
             cpost(1) tpost(1) ///
-            tacorr(`ac') cacorr(`ac') alpha(0.05) reps(2000) ///
+            trho1(`ac') crho1(`ac') alpha(0.05) reps(2000) ///
 			noi table level perf
 			
 			mat effect = nullmat(effect) \ r(pss_table)
@@ -859,7 +860,7 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\level_cover
 
 set scheme stmono2
 * level change (20% 25% 30% increase); 10-50 time periods; 4-20 controls; 1 sd for white noise 
-power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(0) cpre(0) tstep(2 2.5 3) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) reps(2000) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(0) cpre(0) tstep(2 2.5 3) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) reps(2000) ///
 	noi table level prais perf
 	
 	mat effect = r(pss_table)
@@ -923,7 +924,7 @@ forvalues ac = -0.9(0.3)0.9 {
             tint(10) cint(10) tpre(1) cpre(1) ///
             tstep(2 2.5 3) cstep(0) tsd(1) csd(1) ///
             cpost(1) tpost(1) ///
-            tacorr(`ac') cacorr(`ac') alpha(0.05) reps(2000) ///
+            trho1(`ac') crho1(`ac') alpha(0.05) reps(2000) ///
 			noi table level prais perf
 			
 			mat effect = nullmat(effect) \ r(pss_table)
@@ -1201,7 +1202,7 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\combined_le
 
 ***** OLS with NW std errs ****
 * pre-to-post trend change when the starting trend for tx is 5 and starting trend for controls is 1
-power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(5) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(5.25 5.50 6) tacorr(.20) cacorr(.20) reps(2000) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(5) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(5.25 5.50 6) trho1(.20) crho1(.20) reps(2000) ///
 	noi alpha(0.05) perf
 	
 	mat effect = r(pss_table)
@@ -1231,7 +1232,7 @@ power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(5) cpre(1) t
 save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\sens1_nw.dta", replace	
 
 ***** Prais-Winsten  *****
-power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(10) tpre(5) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(5.25 5.50 6) tacorr(.20) cacorr(.20) reps(2000) noi alpha(0.05) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(10) tpre(5) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(5.25 5.50 6) trho1(.20) crho1(.20) reps(2000) noi alpha(0.05) ///
 	prais perf
 	
 	mat effect = r(pss_table)
@@ -1293,7 +1294,7 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\sens1.gph",
 
 ***** OLS with NW std errs ****
 * pre-to-post trend change when the starting trend for tx is 5 and starting trend for controls is 1
-power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(0) cpre(0) tstep(2) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) reps(2000) noi alpha(0.05) ///
+power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(0) cpre(0) tstep(2) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) reps(2000) noi alpha(0.05) ///
 	level perf
 	
 	mat effect = r(pss_table)
@@ -1323,7 +1324,7 @@ power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(0) cpre(0) t
 save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\sens2_nw.dta", replace		
 
 ***** Prais-Winsten  *****
-power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(0) cpre(0) tstep(2) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) reps(2000) noi alpha(0.05) ///
+power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(0) cpre(0) tstep(2) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) reps(2000) noi alpha(0.05) ///
 	level prais perf
 	
 	mat effect = r(pss_table)
@@ -1384,7 +1385,7 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\sens2.gph",
 
 ***** OLS with NW std errs ****
 * pre-to-post trend change when the starting trend for tx is 5 and starting trend for controls is 1
-power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(1) cpre(1) tstep(2) cstep(0) tsd(1) csd(1) cpost(1) tpost(2) tacorr(.20) cacorr(.20) reps(2000) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(8) tpre(1) cpre(1) tstep(2) cstep(0) tsd(1) csd(1) cpost(1) tpost(2) trho1(.20) crho1(.20) reps(2000) ///
 	noi alpha(0.05) perf
 	
 	mat effect = r(pss_table)
@@ -1415,7 +1416,7 @@ save "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\sens3_nw.dta", replace
 	
 
 ***** Prais-Winsten  *****
-power multi_itsa, n(10(10)50) contcnt(4(4)20) tint(10) cint(8) tpre(1) cpre(1) tstep(2) cstep(0) tsd(1) csd(1) cpost(1) tpost(2) tacorr(.20) cacorr(.20) reps(2000) noi alpha(0.05) ///
+power multi_itsa, n(10(5)50) contcnt(4(4)20) tint(10) cint(8) tpre(1) cpre(1) tstep(2) cstep(0) tsd(1) csd(1) cpost(1) tpost(2) trho1(.20) crho1(.20) reps(2000) noi alpha(0.05) ///
 	prais perf	
 	
 	mat effect = r(pss_table)
@@ -1478,17 +1479,17 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\sens3.gph",
 *********
 
 * show DGP for trend (25%)
-power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.25) tacorr(.20) cacorr(.20) alpha(0.05)
+power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.25) trho1(.20) crho1(.20) alpha(0.05)
 itsa y , treat(1) trperiod(25) fig(ylab(0(20)100) title("(A)") legend(off) note("") subtitle("")) replace posttrend
 graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_trend_.25_graph.gph"
 
 * show DGP for trend (50%)
-power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.50) tacorr(.20) cacorr(.20) alpha(0.05)
+power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(1.50) trho1(.20) crho1(.20) alpha(0.05)
 itsa y , treat(1) trperiod(25) fig(ylab(0(20)100) title("(B)") legend(off) note("") subtitle("")) replace posttrend
 graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_trend_.50_graph.gph"
 
 * show DGP for trend (100%)
-power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(2) tacorr(.20) cacorr(.20) alpha(0.05)
+power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(1) cpre(1) tstep(0) cstep(0) tsd(1) csd(1) cpost(1) tpost(2) trho1(.20) crho1(.20) alpha(0.05)
 itsa y , treat(1) trperiod(25) fig(ylab(0(20)100) title("(C)") legend(off) note("") subtitle("")) replace posttrend
 graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_trend_1.0_graph.gph"
 
@@ -1502,17 +1503,17 @@ graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_trend_
 * level *
 *********
 * show DGP for level (20%)
-power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(0) cpre(0) tstep(2) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) alpha(0.05)
+power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(0) cpre(0) tstep(2) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) alpha(0.05)
 itsa y , treat(1) trperiod(25) fig(ylab(0(5)30) title("(A)") legend(off) note("") subtitle("")) replace posttrend
 graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_level_.20_graph.gph"
 
 * show DGP for level (25%)
-power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(0) cpre(0) tstep(2.5) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) alpha(0.05)
+power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(0) cpre(0) tstep(2.5) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) alpha(0.05)
 itsa y , treat(1) trperiod(25) fig(ylab(0(5)30) title("(B)") legend(off) note("") subtitle("")) replace posttrend
 graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_level_.25_graph.gph"
 
 * show DGP for level (30%)
-power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(0) cpre(0) tstep(3) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) tacorr(.20) cacorr(.20) alpha(0.05)
+power_sim_multi_itsa, n(50) trp(25) contcnt(12) tint(10) cint(10) tpre(0) cpre(0) tstep(3) cstep(0) tsd(1) csd(1) cpost(0) tpost(0) trho1(.20) crho1(.20) alpha(0.05)
 itsa y , treat(1) trperiod(25) fig(ylab(0(5)30) title("(C)") legend(off) note("") subtitle("")) replace posttrend
 graph save "Graph" "C:\Users\Ariel\Desktop\ITSA_stuff\compare models\Demo_level_.30_graph.gph"
 
